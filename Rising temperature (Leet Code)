@@ -1,0 +1,10 @@
+# Write your MySQL query statement below
+with cte_1 as
+(
+select id, recordDate, temperature, lag(temperature,1) over(order by recordDate) as previous_temperature
+from Weather
+)
+
+select id
+from cte_1
+where temperature > previous_temperature
