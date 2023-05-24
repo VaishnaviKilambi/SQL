@@ -1,0 +1,10 @@
+with count_num as
+(
+select num, count(*) as count
+from MyNumbers
+group by num
+having count = 1
+)
+
+select max(num)
+from count_num
