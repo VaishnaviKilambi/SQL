@@ -1,0 +1,39 @@
+# Write your MySQL query statement below
+-- calculate first orders
+-- calculate percentage of immediate orders in first orders
+
+with min_order as
+(
+    select delivery_id, customer_id, order_date, customer_pref_delivery_date,
+    MIN(order_date) over(partition by customer_id) as min_order
+    from Delivery
+    -- where order_date = ALL (select min(order_date) from Delivery 
+    -- group by customer_id)  
+),
+
+first_order as
+(
+    select delivery_id, customer_id, order_date, customer_pref_delivery_date, min_order,
+    (case 
+        when order_date = min_order then 'first'
+        else 'rest'
+    end) as first
+    From min_order
+
+),
+
+order_type as
+(
+    select delivery_id, customer_id, order_date, customer_pref_delivery_date, min_order, first,
+    (case 
+        when customer_pref_delivery_date = min_order then 'immediate'
+        else 'scheduled'
+    end) as flag
+    from first_order
+    group by customer_id
+)
+
+select COUNT(CASE WHEN flag = 'immediate' THEN 1 ELSE 0 END)/count(*) as immediate_percentage
+from order_type
+where first = 'first'
+group by customer_id -- first order from minorder query
