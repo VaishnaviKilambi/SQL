@@ -1,0 +1,12 @@
+-- highest salary in each department
+with rank_table as
+(
+select d.name as Department, e.name as Employee, e.salary as Salary, rank() over(partition by d.name order by e.salary DESC) rnk
+from Employee e
+inner join Department d
+on e.departmentId = d.id
+)
+
+select Department, Employee, Salary
+from rank_table
+where rnk = 1
