@@ -1,5 +1,11 @@
 # SQL
 
-Collection of my solutions from Leet code, Strata Scratch problems from my practise
+Collection of some good problems from Leet code and Strata Scratch and my SQL notes to deal with complex scenarios
 
-Using concepts of joins, windowfunctions and Common Table Expressions
+Topics :
+- CTEs
+- Window functions (Lead, Lag, rank functions)
+- Sub queries
+- Group by, having and where clause
+
+Environment : MySQL, T-SQL
